@@ -4,17 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let bgAudio = null;
     const body = document.body;
 
-    // Gesammelte Daten für das Backend
     let finalData = {
-        name: "",
-        songs: [],
-        dateIdea: "",
-        specificIdea: "",
-        date: "",
-        time: ""
+        name: "", songs: [], dateIdea: "", specificIdea: "", date: "", time: ""
     };
 
-    // --- Sternenhimmel Generator ---
     function createStars() {
         const container = document.getElementById("stars-container");
         container.innerHTML = "";
@@ -32,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     createStars();
 
-    // --- Geheimes Backend ---
     let secretClicks = 0;
     document.getElementById("secret-trigger").addEventListener("click", () => {
         secretClicks++;
@@ -70,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // --- Screen 1: Start ---
     document.getElementById("btn-test").addEventListener("click", () => {
         document.getElementById("screen-question").classList.add("hidden");
         document.getElementById("screen-camera").classList.remove("hidden");
@@ -78,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
         startCameraScan();
     });
 
-    // --- Screen 2: Kamera Scan ---
     async function startCameraScan() {
         const video = document.getElementById("video");
         
@@ -87,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
             video.srcObject = stream;
         } catch (err) {
             alert("Camera access denied! We'll just assume you are 100% pretty anyway! 🥰");
-            startGraphAnimation(); // Fallback
+            startGraphAnimation(); 
             return;
         }
 
@@ -99,21 +89,42 @@ document.addEventListener("DOMContentLoaded", () => {
             faceScanInterval = setInterval(async () => {
                 const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions());
                 
-                // Wir scannen für ca. 4 Sekunden (40 * 100ms), solange ein Gesicht da ist
-                if (detections.length > 0) {
-                    scanTime++;
-                }
+                if (detections.length > 0) scanTime++;
                 
-                if (scanTime >= 30) { // Nach ~3 Sekunden Gesicht im Bild
+                if (scanTime >= 30) {
                     clearInterval(faceScanInterval);
-                    video.srcObject.getTracks().forEach(track => track.stop()); // Kamera aus
+                    video.srcObject.getTracks().forEach(track => track.stop());
                     startGraphAnimation();
                 }
             }, 100);
         });
     }
 
-    // --- Screen 3: Graph Animation ---
+    function triggerFloralExplosion() {
+        const emojis = ["🌸", "❤️", "🌺", "🌷", "✨"];
+        for (let i = 0; i < 70; i++) {
+            const particle = document.createElement("div");
+            particle.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            particle.className = "explosion-particle";
+            
+            particle.style.left = "48vw";
+            particle.style.top = "40vh";
+            document.body.appendChild(particle);
+            
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = 30 + Math.random() * 80; // Wucht der Explosion
+            const endX = Math.cos(angle) * velocity;
+            const endY = Math.sin(angle) * velocity;
+            
+            setTimeout(() => {
+                particle.style.transform = `translate(${endX}vw, ${endY}vh) scale(${Math.random() * 1.5 + 0.5}) rotate(${Math.random() * 360}deg)`;
+                particle.style.opacity = "0";
+            }, 10);
+            
+            setTimeout(() => particle.remove(), 1000);
+        }
+    }
+
     function startGraphAnimation() {
         document.getElementById("screen-camera").classList.add("hidden");
         document.getElementById("screen-graph").classList.remove("hidden");
@@ -123,32 +134,54 @@ document.addEventListener("DOMContentLoaded", () => {
         const statusText = document.getElementById("graph-status");
         
         let val = 0;
-        let speed = 40; // ms per 1%
+        let speed = 40; 
 
         let graphInterval = setInterval(() => {
             val++;
-            bar.style.height = val + "%";
+            
+            if(val <= 100) {
+                bar.style.height = val + "%";
+            }
+            
             percText.innerText = val + "%";
 
             if (val === 40) statusText.innerText = "Wow, numbers are rising fast...";
             if (val === 80) statusText.innerText = "Error: Prettiness levels are critically high!";
 
-            if (val >= 100) {
+            // Blink-Phase ab 100%
+            if (val === 100) {
+                statusText.innerText = "SYSTEM OVERLOAD!";
+                percText.classList.add("blinking-text");
+                statusText.classList.add("blinking-text");
+                bar.classList.add("blinking-bar");
+            }
+
+            // Explosion
+            if (val >= 160) {
                 clearInterval(graphInterval);
-                statusText.innerText = "OVERFLOW!";
-                document.querySelector(".big-graph-container").classList.add("explode");
+                triggerFloralExplosion();
+                
+                // Graph ausblenden
+                document.querySelector(".big-graph-container").classList.add("hidden");
+                percText.classList.add("hidden");
+                statusText.classList.add("hidden");
                 
                 setTimeout(() => {
                     document.getElementById("screen-graph").classList.add("hidden");
                     document.getElementById("screen-question").classList.remove("hidden");
                     document.getElementById("initial-buttons").classList.add("hidden");
                     document.getElementById("result-buttons").classList.remove("hidden");
-                }, 1000);
+                    
+                    // Aufräumen falls man neu lädt
+                    document.querySelector(".big-graph-container").classList.remove("hidden");
+                    percText.classList.remove("hidden", "blinking-text");
+                    statusText.classList.remove("hidden", "blinking-text");
+                    bar.classList.remove("blinking-bar");
+                }, 1500); 
             }
         }, speed);
     }
 
-    // --- Screen 4: Yup / Nah ---
     const btnYup = document.getElementById("btn-yup");
     const btnNah = document.getElementById("btn-nah");
 
@@ -157,7 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("screen-name").classList.remove("hidden");
     });
 
-    // Fliehender Button - Angepasst für iPad (Mouse/Trackpad) vs Phone (Touch)
     function moveButton() {
         const x = Math.random() * (window.innerWidth - btnNah.clientWidth - 50);
         const y = Math.random() * (window.innerHeight - btnNah.clientHeight - 50);
@@ -167,27 +199,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     btnNah.addEventListener("mouseenter", () => {
-        // Auf Geräten mit Maus (inkl. iPad Trackpad) flieht der Button
         if (window.innerWidth > 768 || window.matchMedia("(hover: hover)").matches) {
             moveButton();
         }
     });
 
     btnNah.addEventListener("touchstart", (e) => {
-        // Auf reinen Touch-Handys wird Klick einfach blockiert
         if (window.innerWidth <= 768) {
             e.preventDefault(); 
             btnNah.classList.add("disabled-on-mobile");
         } else {
-            moveButton(); // Falls doch großes Touch-Display
+            moveButton(); 
         }
     });
 
-    btnNah.addEventListener("click", (e) => {
-        e.preventDefault(); // Kann nie geklickt werden
-    });
+    btnNah.addEventListener("click", (e) => e.preventDefault());
 
-    // --- Screen 5: Name & Komplimente ---
     const complimentsDict = {
         A:"Adorable", B:"Beautiful", C:"Cute", D:"Dazzling", E:"Elegant", F:"Fabulous",
         G:"Gorgeous", H:"Heavenly", I:"Incredible", J:"Joyful", K:"Kind", L:"Lovely",
@@ -200,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const name = document.getElementById("name-input").value.trim().toUpperCase();
         if(!name) return;
         
-        finalData.name = document.getElementById("name-input").value; // Fürs Backend speichern
+        finalData.name = document.getElementById("name-input").value; 
         const container = document.getElementById("compliment-container");
         container.innerHTML = "";
         
@@ -236,7 +263,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, name.length * 300 + 1000);
     });
 
-    // --- Screen 6: Music ---
     let searchTimeout;
     const setupMusicSearch = (inputId, dropdownId, isFirst) => {
         const input = document.getElementById(inputId);
@@ -294,10 +320,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("screen-music-result").classList.remove("hidden");
         
+        // Audio mit sanftem Fade-In abspielen
         if(selectedSongData) {
             bgAudio = new Audio(selectedSongData);
-            bgAudio.volume = 0.5;
-            bgAudio.play().catch(e => console.log("Audio blockiert"));
+            bgAudio.volume = 0; // Startet stumm
+            bgAudio.play().then(() => {
+                let vol = 0;
+                let fadeInterval = setInterval(() => {
+                    if (vol < 0.5) {
+                        vol += 0.05;
+                        bgAudio.volume = vol;
+                    } else {
+                        clearInterval(fadeInterval);
+                    }
+                }, 200); // Erhöht die Lautstärke alle 200ms
+            }).catch(e => console.log("Audio blockiert"));
         }
 
         document.getElementById("screen-music-result").scrollIntoView({ behavior: 'smooth' });
@@ -309,7 +346,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3000); 
     });
 
-    // --- Screen 8: Date Options ---
     const dateRadios = document.getElementsByName("date_opt");
     const dynamicInputs = document.getElementById("date-dynamic-inputs");
     const btnDateNext = document.getElementById("btn-date-next");
@@ -345,7 +381,6 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCalendar();
     });
 
-    // --- Screen 9: Kalender ---
     let currentDate = new Date();
     const blockedDates = ["26.9", "9.10", "10.10", "12.12"]; 
 
@@ -388,7 +423,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     finalData.date = `${day}. ${monthNames[month]} ${year}`;
                     
-                    // Zeit-Auswahl einblenden
                     document.getElementById("time-selection").classList.remove("hidden");
                 });
             }
@@ -412,12 +446,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- Screen 10: Finish & Daten speichern ---
     document.getElementById("btn-finish").addEventListener("click", () => {
-        // Daten im lokalen Speicher ablegen (für das Geheim-Dashboard)
         localStorage.setItem("crushData", JSON.stringify(finalData));
 
-        // DATEN HEIMLICH AN DICH SENDEN (Formspree)
         fetch("https://formspree.io/f/mgaejwoa", {
             method: "POST",
             headers: { 
