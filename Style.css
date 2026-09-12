@@ -1,0 +1,242 @@
+:root {
+    --bg-color: #fff0f3;
+    --text-color: #590d22;
+    --primary-color: #ff4d6d;
+    --secondary-color: #ffb3c1;
+    --font-main: 'Poppins', sans-serif;
+    --font-title: 'Dancing Script', cursive;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    overflow-y: hidden; /* Wird per JS geändert */
+    transition: background 1.5s ease;
+}
+
+/* Sternenhimmel-Klasse (für Stargazing) */
+body.stargazing-mode {
+    background: radial-gradient(circle at bottom, #1b2735 0%, #090a0f 100%);
+    color: #fff;
+}
+
+.title {
+    font-family: var(--font-title);
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+body.stargazing-mode .title { color: #ffb3c1; }
+
+.screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.hidden { display: none !important; }
+
+/* Buttons */
+.btn {
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: var(--font-main);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin: 10px;
+    font-weight: 600;
+}
+.btn.primary {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+}
+.btn.primary:hover { transform: scale(1.05); }
+.btn.secondary {
+    background-color: #fff;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+/* Nah-Button Fluchtverhalten & Mobile Block */
+@media (pointer: coarse) {
+    /* Touchscreens */
+    #btn-nah {
+        opacity: 0.5;
+        pointer-events: none; /* Nicht klickbar */
+    }
+    #btn-nah::after {
+        content: " (locked)";
+        font-size: 0.8rem;
+    }
+}
+#btn-nah { position: relative; z-index: 100; }
+
+/* Kamera & Scan */
+.camera-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid var(--primary-color);
+    margin: 20px 0;
+    background: #000;
+}
+#video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* Spiegelverkehrt */
+}
+.scan-overlay {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255,77,109,0) 0%, rgba(255,77,109,0.5) 50%, rgba(255,77,109,0) 100%);
+    animation: scan 2s linear infinite;
+    display: none;
+}
+@keyframes scan {
+    0% { top: -100%; }
+    100% { top: 100%; }
+}
+
+/* Prettiness Graph */
+.graph-container { width: 80%; max-width: 400px; }
+.progress-bar {
+    width: 100%;
+    height: 25px;
+    background: #ffe5ec;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid var(--secondary-color);
+}
+.bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffb3c1, #ff4d6d);
+    transition: width 0.1s linear;
+}
+.explode {
+    animation: explodeAnim 0.8s forwards ease-out;
+}
+@keyframes explodeAnim {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.5); filter: brightness(2); background: yellow; }
+    100% { transform: scale(5); opacity: 0; }
+}
+
+/* Inputs & Name Animation */
+.input-group { margin-top: 20px; }
+input[type="text"] {
+    padding: 12px;
+    font-size: 1.1rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: 20px;
+    outline: none;
+    font-family: var(--font-main);
+    text-align: center;
+}
+#compliment-container {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+}
+.flying-letter {
+    position: absolute;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    transition: all 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.flying-letter .compliment {
+    font-size: 1rem;
+    color: var(--text-color);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 5px;
+    white-space: nowrap;
+}
+
+/* Musik */
+.song-inputs { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; width: 100%; max-width: 400px; }
+.song-search { position: relative; width: 100%; }
+.song-input { width: 100%; box-sizing: border-box; }
+.dropdown {
+    position: absolute; top: 100%; left: 0; width: 100%;
+    background: white; border: 1px solid #ddd;
+    border-radius: 10px; max-height: 200px; overflow-y: auto;
+    z-index: 100; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.dropdown-item {
+    display: flex; align-items: center; padding: 10px; cursor: pointer; border-bottom: 1px solid #eee;
+}
+.dropdown-item:hover { background: var(--bg-color); }
+.dropdown-item img { width: 40px; height: 40px; border-radius: 5px; margin-right: 15px; }
+.loading-anim { width: 100%; animation: load 3s ease-in-out forwards; }
+@keyframes load { 0% { width: 0%; } 100% { width: 100%; } }
+
+/* Date Options */
+.options-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;
+}
+.date-card {
+    background: white; padding: 20px; border-radius: 15px; cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-weight: bold; border: 2px solid transparent;
+    transition: 0.3s;
+}
+.date-card:hover { transform: translateY(-5px); }
+.date-card input { display: none; }
+.date-card:has(input:checked) { border-color: var(--primary-color); background: var(--bg-color); }
+.dynamic-inputs { margin: 20px 0; width: 100%; max-width: 400px; animation: fadeIn 0.5s; }
+
+/* Calendar */
+.calendar { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; color: #333; }
+.cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.cal-header span { cursor: pointer; font-weight: bold; color: var(--primary-color); }
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); font-weight: bold; margin-bottom: 10px; font-size: 0.9rem; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.cal-day { padding: 10px 0; border-radius: 50%; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+.cal-day:hover:not(.disabled) { background: var(--secondary-color); color: white; }
+.cal-day.disabled { color: #ccc; text-decoration: line-through; cursor: not-allowed; }
+.cal-day.selected { background: var(--primary-color); color: white; font-weight: bold; box-shadow: 0 0 10px var(--primary-color); }
+
+/* Bling & Animationen */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.scroll-hint { margin-top: 30px; animation: bounce 2s infinite; font-weight: bold; color: var(--primary-color); }
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+
+/* Hintergrund Blumen */
+.flower-bg {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 1; opacity: 0.4;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="20">🌸</text></svg>'),
+                      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="15">✨</text></svg>');
+    background-repeat: space; background-size: 100px 100px, 150px 150px;
+}
+body.stargazing-mode .flower-bg { opacity: 0; }
