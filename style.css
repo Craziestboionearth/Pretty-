@@ -18,32 +18,22 @@ body {
 }
 
 #secret-trigger {
-    position: absolute;
-    top: 0; left: 0;
-    width: 60px; height: 60px;
-    z-index: 9999;
-    cursor: default;
+    position: absolute; top: 0; left: 0; width: 60px; height: 60px; z-index: 9999; cursor: default;
 }
 
-/* --- Sternenhimmel --- */
 #stars-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     pointer-events: none; z-index: 0; opacity: 0; transition: opacity 1.5s ease;
 }
-body.stargazing-mode {
-    background: radial-gradient(circle at bottom, #1b2735 0%, #090a0f 100%);
-    color: #fff;
-}
+body.stargazing-mode { background: radial-gradient(circle at bottom, #1b2735 0%, #090a0f 100%); color: #fff; }
 body.stargazing-mode #stars-container { opacity: 1; }
 body.stargazing-mode .flower-bg { opacity: 0; }
 body.stargazing-mode .title { color: #ffb3c1; }
-/* Damit Text auf Buttons im dunklen Modus gut lesbar bleibt */
 body.stargazing-mode .date-card, body.stargazing-mode .btn.secondary { color: #333; }
 
 .star {
     position: absolute; background: white; border-radius: 50%;
-    box-shadow: 0 0 5px white, 0 0 10px white;
-    animation: twinkle linear infinite;
+    box-shadow: 0 0 5px white, 0 0 10px white; animation: twinkle linear infinite;
 }
 @keyframes twinkle {
     0% { opacity: 0.3; transform: scale(0.8); }
@@ -63,7 +53,6 @@ body.stargazing-mode .date-card, body.stargazing-mode .btn.secondary { color: #3
 }
 .hidden { display: none !important; }
 
-/* Buttons */
 .btn {
     padding: 12px 24px; font-size: 1.2rem; border: none; border-radius: 30px;
     cursor: pointer; font-family: var(--font-main); transition: transform 0.2s, box-shadow 0.2s;
@@ -72,16 +61,10 @@ body.stargazing-mode .date-card, body.stargazing-mode .btn.secondary { color: #3
 .btn.primary { background-color: var(--primary-color); color: white; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4); }
 .btn.primary:hover { transform: scale(1.05); }
 .btn.secondary { background-color: #fff; color: var(--primary-color); border: 2px solid var(--primary-color); }
-
 #btn-nah { position: relative; z-index: 100; transition: left 0.3s ease, top 0.3s ease; }
-/* Deaktiviertes Aussehen für Handys */
 #btn-nah.disabled-on-mobile { opacity: 0.5; cursor: not-allowed; }
 
-/* --- Kamera & Scan --- */
-.scanning-text {
-    animation: blink 1s infinite;
-    color: var(--primary-color);
-}
+.scanning-text { animation: blink 1s infinite; color: var(--primary-color); }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 .camera-container {
@@ -89,13 +72,11 @@ body.stargazing-mode .date-card, body.stargazing-mode .btn.secondary { color: #3
     overflow: hidden; border: 5px solid var(--primary-color); margin: 20px 0; background: #000;
 }
 #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-
 .face-frame {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 150px; height: 200px; border: 3px dashed rgba(255,255,255,0.7);
     border-radius: 50%; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
 }
-
 .scan-overlay {
     position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
     background: linear-gradient(to bottom, transparent, rgba(255,77,109,0.8), transparent);
@@ -103,47 +84,44 @@ body.stargazing-mode .date-card, body.stargazing-mode .btn.secondary { color: #3
 }
 @keyframes scan { 0% { top: -100%; } 100% { top: 100%; } }
 
-/* --- Big Graph Screen --- */
 .big-graph-container {
     width: 60px; height: 40vh; background: #ffe5ec; border-radius: 30px;
     border: 4px solid var(--primary-color); position: relative;
     overflow: hidden; margin: 30px 0; display: flex; align-items: flex-end;
 }
 .big-bar-fill {
-    width: 100%; height: 0%;
-    background: linear-gradient(0deg, #ffb3c1, #ff0033);
+    width: 100%; height: 0%; background: linear-gradient(0deg, #ffb3c1, #ff0033);
     transition: height 0.1s linear;
 }
 #graph-percentage { font-size: 3rem; color: var(--primary-color); font-weight: bold; margin: 0; }
 
-.explode { animation: explodeAnim 0.8s forwards ease-out; }
-@keyframes explodeAnim {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.5); background: #ff0000; box-shadow: 0 0 50px red; }
-    100% { transform: scale(5); opacity: 0; }
+/* Blinking Classes for Overload */
+.blinking-text { animation: fast-blink 0.2s infinite; color: red !important; text-shadow: 0 0 10px red; }
+.blinking-bar { background: red !important; box-shadow: inset 0 0 20px darkred; animation: fast-blink-bg 0.2s infinite; }
+@keyframes fast-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes fast-blink-bg { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(2); } }
+
+/* Particle System for Explosion */
+.explosion-particle {
+    position: fixed; pointer-events: none; z-index: 9999;
+    font-size: 2rem; opacity: 1; transition: transform 1s cubic-bezier(0.1, 0.8, 0.3, 1), opacity 1s ease-out;
 }
 
-/* Inputs & Name Animation */
 .input-group { margin-top: 20px; }
 input[type="text"], input[type="time"] {
     padding: 12px; font-size: 1.1rem; border: 2px solid var(--secondary-color);
     border-radius: 20px; outline: none; font-family: var(--font-main); text-align: center;
 }
-#compliment-container {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    pointer-events: none; z-index: 50;
-}
+#compliment-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; }
 .flying-letter {
     position: absolute; font-size: 2rem; font-weight: bold; color: var(--primary-color);
-    transition: all 1.5s cubic-bezier(0.25, 0.8, 0.25, 1); opacity: 0;
-    display: flex; flex-direction: column; align-items: center;
+    transition: all 1.5s cubic-bezier(0.25, 0.8, 0.25, 1); opacity: 0; display: flex; flex-direction: column; align-items: center;
 }
 .flying-letter .compliment {
     font-size: 1rem; color: var(--text-color); background: rgba(255, 255, 255, 0.9);
     padding: 4px 10px; border-radius: 10px; margin-top: 5px; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Musik */
 .song-inputs { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; width: 100%; max-width: 400px; }
 .song-search { position: relative; width: 100%; }
 .song-input { width: 100%; box-sizing: border-box; }
@@ -161,7 +139,6 @@ input[type="text"], input[type="time"] {
 .loading-anim { animation: load 3s ease-in-out forwards; }
 @keyframes load { 0% { width: 0%; } 100% { width: 100%; } }
 
-/* Date Options */
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
 .date-card {
     background: white; padding: 20px; border-radius: 15px; cursor: pointer;
@@ -172,7 +149,6 @@ input[type="text"], input[type="time"] {
 .date-card:has(input:checked) { border-color: var(--primary-color); background: var(--bg-color); }
 .dynamic-inputs { margin: 20px 0; width: 100%; max-width: 400px; animation: fadeIn 0.5s; }
 
-/* Calendar */
 .calendar { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; color: #333; }
 .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .cal-header span { cursor: pointer; font-weight: bold; color: var(--primary-color); }
