@@ -85,15 +85,26 @@ body.stargazing-mode .date-card, body.stargazing-mode .btn.secondary { color: #3
 @keyframes scan { 0% { top: -100%; } 100% { top: 100%; } }
 
 .big-graph-container {
-    width: 60px; height: 40vh; background: #ffe5ec; border-radius: 30px;
-    border: 4px solid var(--primary-color); position: relative;
-    overflow: hidden; margin: 30px 0; display: flex; align-items: flex-end;
+    width: 60px; 
+    height: 250px; 
+    background: #ffe5ec; 
+    border-radius: 30px;
+    border: 4px solid var(--primary-color); 
+    position: relative;
+    overflow: hidden; 
+    margin: 30px 0;
 }
+
 .big-bar-fill {
-    width: 100%; height: 0%; background: linear-gradient(0deg, #ffb3c1, #ff0033);
+    width: 100%; 
+    height: 0%; 
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(0deg, #ffb3c1, #ff0033);
     transition: height 0.1s linear;
 }
-#graph-percentage { font-size: 3rem; color: var(--primary-color); font-weight: bold; margin: 0; }
+
 
 /* Blinking Classes for Overload */
 .blinking-text { animation: fast-blink 0.2s infinite; color: red !important; text-shadow: 0 0 10px red; }
