@@ -11,12 +11,10 @@
 </head>
 <body>
     <div class="flower-bg"></div>
-    <div id="stars-container"></div> <!-- Für den Sternenhimmel -->
+    <div id="stars-container"></div>
 
-    <!-- Unsichtbarer Secret-Button oben links für das Backend -->
     <div id="secret-trigger"></div>
 
-    <!-- Backend Screen -->
     <section id="screen-backend" class="screen hidden">
         <h2>Secret Dashboard 🕵️‍♂️</h2>
         <div id="backend-data" style="background: white; padding: 20px; border-radius: 10px; width: 90%; max-width: 500px; color: black; text-align: left;">
@@ -25,7 +23,6 @@
         <button id="btn-close-backend" class="btn secondary">Close</button>
     </section>
 
-    <!-- Screen 1 & 4: Die Frage -->
     <section id="screen-question" class="screen active">
         <h1 class="title">Are you pretty?</h1>
         <div id="initial-buttons">
@@ -37,18 +34,16 @@
         </div>
     </section>
 
-    <!-- Screen 2: Kamera Scan -->
     <section id="screen-camera" class="screen hidden">
         <h2 class="scanning-text">SCANNING IN PROGRESS...</h2>
         <p>Please look directly into the camera.</p>
         <div class="camera-container">
             <video id="video" autoplay muted playsinline></video>
             <div id="scan-overlay" class="scan-overlay"></div>
-            <div class="face-frame"></div> <!-- Rahmen fürs Gesicht -->
+            <div class="face-frame"></div>
         </div>
     </section>
 
-    <!-- Screen 3: Prettiness Graph -->
     <section id="screen-graph" class="screen hidden">
         <h2 class="title">Analyzing Data...</h2>
         <div class="big-graph-container">
@@ -60,7 +55,6 @@
         <h3 id="graph-status">Calculating level of prettiness...</h3>
     </section>
 
-    <!-- Screen 5: Der Name -->
     <section id="screen-name" class="screen hidden">
         <h1 class="title">I knew it!</h1>
         <p>What is the name of the prettiest girl?</p>
@@ -74,14 +68,13 @@
         </div>
     </section>
 
-    <!-- Screen 6: Musik-Auswahl -->
     <section id="screen-music" class="screen hidden">
         <h2>What's your rhythm? 🎶</h2>
         <p>Enter 3 of your favorite songs:</p>
         
         <div class="song-inputs">
             <div class="song-search">
-                <input type="text" id="song-1" class="song-input" placeholder="Song 1 (will be played) 🎵">
+                <input type="text" id="song-1" class="song-input" placeholder="Song 1 🎵">
                 <div id="dropdown-1" class="dropdown"></div>
             </div>
             <div class="song-search">
@@ -96,7 +89,6 @@
         <button id="btn-music" class="btn primary hidden">Hand in Selection</button>
     </section>
 
-    <!-- Screen 7: Music Taste Result -->
     <section id="screen-music-result" class="screen hidden">
         <div id="music-loading">
             <h2>Checking if Music taste is pretty...</h2>
@@ -109,7 +101,6 @@
         </div>
     </section>
 
-    <!-- Screen 8: Date Options -->
     <section id="screen-date-options" class="screen hidden">
         <h2>What do you want to do? 🌸</h2>
         <div class="options-grid">
@@ -120,12 +111,10 @@
         </div>
         
         <div id="date-dynamic-inputs" class="dynamic-inputs hidden">
-            <!-- Wird per JS befüllt -->
         </div>
         <button id="btn-date-next" class="btn primary hidden">Next Step</button>
     </section>
 
-    <!-- Screen 9: Kalender & Uhrzeit -->
     <section id="screen-calendar" class="screen hidden">
         <h2>When are you free? 📅</h2>
         <p>Pick a perfect day for us.</p>
@@ -150,7 +139,6 @@
         <button id="btn-finish" class="btn primary hidden" style="margin-top: 20px;">Let's do this! 💕</button>
     </section>
 
-    <!-- Screen 10: Thank You -->
     <section id="screen-thanks" class="screen hidden">
         <h1 class="title">Thank you!</h1>
         <p>Thank you for your time, your existence, and for making my world brighter. <br> I can't wait! ❤️</p>
