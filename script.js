@@ -412,12 +412,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-        // --- Screen 10: Finish & Daten speichern ---
+    // --- Screen 10: Finish & Daten speichern ---
     document.getElementById("btn-finish").addEventListener("click", () => {
+        // Daten im lokalen Speicher ablegen (für das Geheim-Dashboard)
         localStorage.setItem("crushData", JSON.stringify(finalData));
 
-
-        fetch("HIER_DEINE_KOPIERTE_FORMSPREE_URL_EINFÜGEN", {
+        // DATEN HEIMLICH AN DICH SENDEN (Formspree)
+        fetch("https://formspree.io/f/mgaejwoa", {
             method: "POST",
             headers: { 
                 'Content-Type': 'application/json',
@@ -425,15 +426,14 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify(finalData)
         }).then(response => {
-            console.log("Erfolgreich gesendet!");
+            console.log("Erfolgreich an Formspree gesendet!");
         }).catch(error => {
-            console.error("Fehler:", error);
+            console.error("Fehler beim Senden an Formspree:", error);
         });
 
         body.classList.remove("stargazing-mode");
         document.getElementById("screen-thanks").classList.remove("hidden");
         document.getElementById("screen-thanks").scrollIntoView({ behavior: 'smooth' });
-    
         
         setInterval(() => {
             const heart = document.createElement("div");
