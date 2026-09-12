@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 🌸</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Face API für den Kamera-Scan -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
+    <script defer src="script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hintergrund Blumen -->
+    <div class="flower-bg"></div>
+
+    <!-- Screen 1 & 3: Die Frage -->
+    <section id="screen-question" class="screen active">
+        <h1 class="title">Are you pretty?</h1>
+        <div id="initial-buttons">
+            <button id="btn-test" class="btn primary">Let's test it 📸</button>
+        </div>
+        <div id="result-buttons" class="hidden">
+            <button id="btn-yup" class="btn primary">Yup! 🥰</button>
+            <button id="btn-nah" class="btn secondary">Me? Nah...</button>
+        </div>
+    </section>
+
+    <!-- Screen 2: Kamera Scan -->
+    <section id="screen-camera" class="screen hidden">
+        <h2>Scanning for prettiness...</h2>
+        <p>Please look into the camera and hold still.</p>
+        <div class="camera-container">
+            <video id="video" autoplay muted playsinline></video>
+            <div id="scan-overlay" class="scan-overlay"></div>
+        </div>
+        <div class="graph-container">
+            <p>Level of Prettiness:</p>
+            <div class="progress-bar">
+                <div id="prettiness-bar" class="bar-fill"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screen 4: Der Name -->
+    <section id="screen-name" class="screen hidden">
+        <h1 class="title">I knew it!</h1>
+        <p>What is the name of the prettiest girl?</p>
+        <div class="input-group">
+            <input type="text" id="name-input" placeholder="Your Name (e.g. Jane)" autocomplete="off">
+            <button id="btn-name" class="btn primary">Enter</button>
+        </div>
+        <div id="compliment-container"></div>
+        <div id="scroll-hint-1" class="scroll-hint hidden">
+            <p>Scroll down my love ⬇️</p>
+        </div>
+    </section>
+
+    <!-- Screen 5: Musik-Auswahl -->
+    <section id="screen-music" class="screen hidden">
+        <h2>What's your rhythm? 🎶</h2>
+        <p>Enter 3 of your favorite songs:</p>
+        
+        <div class="song-inputs">
+            <div class="song-search">
+                <input type="text" id="song-1" class="song-input" placeholder="Song 1 (will be played) 🎵">
+                <div id="dropdown-1" class="dropdown"></div>
+            </div>
+            <div class="song-search">
+                <input type="text" id="song-2" class="song-input" placeholder="Song 2 🎵">
+                <div id="dropdown-2" class="dropdown"></div>
+            </div>
+            <div class="song-search">
+                <input type="text" id="song-3" class="song-input" placeholder="Song 3 🎵">
+                <div id="dropdown-3" class="dropdown"></div>
+            </div>
+        </div>
+        <button id="btn-music" class="btn primary hidden">Hand in Selection</button>
+    </section>
+
+    <!-- Screen 6: Music Taste Result -->
+    <section id="screen-music-result" class="screen hidden">
+        <div id="music-loading">
+            <h2>Checking if Music taste is pretty...</h2>
+            <div class="progress-bar"><div class="bar-fill loading-anim"></div></div>
+        </div>
+        <div id="music-success" class="hidden text-center">
+            <h2 class="title">Music taste is 100% pretty!</h2>
+            <p>Just like you… So it fits perfectly. ❤️</p>
+            <div class="scroll-hint"><p>Keep scrolling ⬇️</p></div>
+        </div>
+    </section>
+
+    <!-- Screen 7: Date Options -->
+    <section id="screen-date-options" class="screen hidden">
+        <h2>What would you like to do on our Date? 🌸</h2>
+        <div class="options-grid">
+            <label class="date-card"><input type="radio" name="date_opt" value="cinema"> 🍿 Cinema</label>
+            <label class="date-card"><input type="radio" name="date_opt" value="dinner"> 🍝 Food/Dinner</label>
+            <label class="date-card"><input type="radio" name="date_opt" value="stars"> ✨ Stargazing</label>
+            <label class="date-card"><input type="radio" name="date_opt" value="custom"> 💡 Something else</label>
+        </div>
+        
+        <div id="date-dynamic-inputs" class="dynamic-inputs hidden">
+            <!-- Wird per JS befüllt -->
+        </div>
+        <button id="btn-date-next" class="btn primary hidden">Next Step</button>
+    </section>
+
+    <!-- Screen 8: Kalender -->
+    <section id="screen-calendar" class="screen hidden">
+        <h2>When are you free? 📅</h2>
+        <p>Pick a perfect day for us.</p>
+        <div class="calendar">
+            <div class="cal-header">
+                <span id="cal-month-prev">◀</span>
+                <h3 id="cal-month-title">Month Year</h3>
+                <span id="cal-month-next">▶</span>
+            </div>
+            <div class="cal-weekdays">
+                <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+            </div>
+            <div id="cal-grid" class="cal-grid"></div>
+        </div>
+        <p id="selected-date-text" class="hidden highlight-text"></p>
+        <button id="btn-finish" class="btn primary hidden">Let's do this! 💕</button>
+    </section>
+
+    <!-- Screen 9: Thank You -->
+    <section id="screen-thanks" class="screen hidden">
+        <h1 class="title">Thank you!</h1>
+        <p>Thank you for your time, your existence, and for making my world brighter. <br> I can't wait! ❤️</p>
+        <div class="heart-shower"></div>
+    </section>
+
+</body>
+</html>
